@@ -18,6 +18,13 @@ ZHIPUAI_API_KEY = ""
 ### openai api proxy
 注意openai的api代理地址。
 
+### 如果使用vscode
+注意.vscode目录里的launch.json的congurations中添加：
+```json
+            "cwd":"${fileDirname}"
+```
+
+
 ## 阅读顺序
 在线阅读的顺序和本地是一样的，但本地的多了一些ipynb，可以尝试。
 
