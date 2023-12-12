@@ -30,15 +30,19 @@ LLM_MODEL_DICT = {
 
 
 LLM_MODEL_LIST = sum(list(LLM_MODEL_DICT.values()),[])
-INIT_LLM = "chatglm_std"
+INIT_LLM = "gpt-3.5-turbo"
 EMBEDDING_MODEL_LIST = ['zhipuai', 'openai', 'm3e']
 INIT_EMBEDDING_MODEL = "openai"
 DEFAULT_DB_PATH = "../../data_base/knowledge_db"
 DEFAULT_PERSIST_PATH = "../../data_base/vector_db/chroma"
 AIGC_AVATAR_PATH = "aigc_avatar.png"
 DATAWHALE_AVATAR_PATH = "datawhale_avatar.png"
-AIGC_LOGO_PATH = "../../figures/aigc_logo.png"
-DATAWHALE_LOGO_PATH = "../../figures/datawhale_logo.png"
+#AIGC_LOGO_PATH = "../../figures/aigc_logo.png"
+AIGC_LOGO_PATH = "../../figures/siemens.jpeg"
+
+#DATAWHALE_LOGO_PATH = "../../figures/datawhale_logo.png"
+DATAWHALE_LOGO_PATH = "../../figures/siemens-logo.png"
+
 
 
 def get_model_by_platform(platform):
@@ -153,11 +157,11 @@ model_center = Model_center()
 block = gr.Blocks()
 with block as demo:
     with gr.Row(equal_height=True):           
-        gr.Image(value=AIGC_LOGO_PATH, scale=1, min_width=10, show_label=False, show_download_button=False, container=False)
+        gr.Image(value=AIGC_LOGO_PATH, scale=1, min_width=10,  show_label=False, show_download_button=False, container=False)
    
         with gr.Column(scale=2):
-            gr.Markdown("""<h1><center>动手学大模型应用开发</center></h1>
-                <center>LLM-UNIVERSE</center>
+            gr.Markdown("""<h1><center>大模型应用开发</center></h1>
+                <center>LLM-知识助手</center>
                 """)
         gr.Image(value=DATAWHALE_LOGO_PATH, scale=1, min_width=10, show_label=False, show_download_button=False, container=False)
 
