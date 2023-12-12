@@ -32,6 +32,9 @@ from langchain.utils import get_from_dict_or_env
 
 import websocket  # 使用websocket_client
 
+# for openai proxy
+openai.api_base=r"https://api.qytech.top/v1"
+
 def get_completion(prompt :str, model :str, temperature=0.1,api_key=None, secret_key=None, access_token=None, appid=None, api_secret=None, max_tokens=2048):
     # 调用大模型获取回复，支持上述三种模型+gpt
     # arguments:
