@@ -1,12 +1,8 @@
-# 导入必要的库
-
 import sys
-import os                # 用于操作系统相关的操作，例如读取环境变量
+import os                
 
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 
-import IPython.display   # 用于在 IPython 环境中显示数据，例如图片
-import io                # 用于处理流式数据（例如文件流）
 import gradio as gr
 from dotenv import load_dotenv, find_dotenv
 from llm.call_llm import get_completion
@@ -14,17 +10,13 @@ from database.create_db import create_db_info
 from qa_chain.Chat_QA_chain_self import Chat_QA_chain_self
 from qa_chain.QA_chain_self import QA_chain_self
 
-# 导入 dotenv 库的函数
-# dotenv 允许您从 .env 文件中读取环境变量
-# 这在开发时特别有用，可以避免将敏感信息（如API密钥）硬编码到代码中
 
-# 寻找 .env 文件并加载它的内容
-# 这允许您使用 os.environ 来读取在 .env 文件中设置的环境变量
 _ = load_dotenv(find_dotenv())
+
 LLM_MODEL_DICT = {
     "openai": ["gpt-3.5-turbo", "gpt-3.5-turbo-16k-0613", "gpt-3.5-turbo-0613", "gpt-4", "gpt-4-32k"],
     "wenxin": ["ERNIE-Bot", "ERNIE-Bot-4", "ERNIE-Bot-turbo"],
-    "xinhuo": ["Spark-1.5", "Spark-2.0"],
+    #"xinhuo": ["Spark-1.5", "Spark-2.0"],
     "zhipuai": ["chatglm_pro", "chatglm_std", "chatglm_lite"]
 }
 
@@ -32,7 +24,7 @@ LLM_MODEL_DICT = {
 LLM_MODEL_LIST = sum(list(LLM_MODEL_DICT.values()),[])
 INIT_LLM = "gpt-3.5-turbo"
 EMBEDDING_MODEL_LIST = ['zhipuai', 'openai', 'm3e']
-INIT_EMBEDDING_MODEL = "openai"
+INIT_EMBEDDING_MODEL = "m3e"
 DEFAULT_DB_PATH = "../../data_base/knowledge_db"
 DEFAULT_PERSIST_PATH = "../../data_base/vector_db/chroma"
 AIGC_AVATAR_PATH = "aigc_avatar.png"
@@ -47,6 +39,7 @@ DATAWHALE_LOGO_PATH = "../../figures/siemens-logo.png"
 
 def get_model_by_platform(platform):
     return LLM_MODEL_DICT.get(platform, "")
+
 class Model_center():
     """
     存储问答 Chain 的对象 
@@ -154,14 +147,14 @@ def respond(message, chat_history, llm, history_len=3, temperature=0.1, max_toke
 
 model_center = Model_center()
 
-block = gr.Blocks()
+block = gr.Blocks(theme=gr.themes.Default())
 with block as demo:
     with gr.Row(equal_height=True):           
         gr.Image(value=AIGC_LOGO_PATH, scale=1, min_width=10,  show_label=False, show_download_button=False, container=False)
    
         with gr.Column(scale=2):
             gr.Markdown("""<h1><center>大模型应用开发</center></h1>
-                <center>LLM-知识助手</center>
+                <center>LLM-多模态知识助手</center>
                 """)
         gr.Image(value=DATAWHALE_LOGO_PATH, scale=1, min_width=10, show_label=False, show_download_button=False, container=False)
 
@@ -247,7 +240,9 @@ with block as demo:
     """)
 # threads to consume the request
 gr.close_all()
-# 启动新的 Gradio 应用，设置分享功能为 True，并使用环境变量 PORT1 指定服务器端口。
+# 1. 启动新的 Gradio 应用，设置分享功能为 True，并使用环境变量 PORT1 指定服务器端口。
 # demo.launch(share=True, server_port=int(os.environ['PORT1']))
-# 直接启动
-demo.launch()
+# 2. 直接启动，只能监听127.0.0.1
+# demo.launch()
+# 3. 监听LAN端口，启动
+demo.launch(server_name="0.0.0.0")

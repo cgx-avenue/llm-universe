@@ -71,11 +71,11 @@ def get_completion_gpt(prompt : str, model : str, temperature : float, api_key:s
         temperature=temperature, # 模型输出的温度系数，控制输出的随机程度
         max_tokens = max_tokens, # 回复最大长度
     )
-    # 调用 OpenAI 的 ChatCompletion 接口
     return response.choices[0].message["content"]
 
 def get_access_token(api_key, secret_key):
     """
+    针对百度文心一言
     使用 API Key，Secret Key 获取access_token，替换下列示例中的应用API Key、应用Secret Key
     """
     # 指定网址
@@ -317,5 +317,7 @@ def parse_llm_api_key(model:str, env_file:dict()=None):
     elif model == "zhipuai":
         return get_from_dict_or_env(env_file, "zhipuai_api_key", "ZHIPUAI_API_KEY")
         # return env_file["ZHIPUAI_API_KEY"]
+    elif model == "m3e":
+        return env_file["HuggingFace_API_KEY"]
     else:
         raise ValueError(f"model{model} not support!!!")
