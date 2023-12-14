@@ -40,6 +40,7 @@ class Chat_QA_chain_self:
         self.Wenxin_secret_key = Wenxin_secret_key
         self.embedding = embedding
         self.embedding_key = embedding_key
+        self.memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
 
 
         self.vectordb = get_vectordb(self.file_path, self.persist_path, self.embedding,self.embedding_key)
@@ -87,11 +88,13 @@ class Chat_QA_chain_self:
 
         qa = ConversationalRetrievalChain.from_llm(
             llm = llm,
-            retriever = retriever
+            retriever = retriever,
+            memory=self.memory
         )
 
         #print(self.llm)
-        result = qa({"question": question,"chat_history": self.chat_history})       #result里有question、chat_history、answer
+        #result = qa({"question": question,"chat_history": self.chat_history})       #result里有question、chat_history、answer
+        result = qa({"question": question,})
         answer =  result['answer']
         self.chat_history.append((question,answer)) #更新历史记录
 
